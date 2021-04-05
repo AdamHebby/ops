@@ -1,0 +1,35 @@
+- name: web
+  hosts: web
+  serial: 1
+  tasks:
+    - name: build fake directories
+      file:
+        path: "/opt/glimesh.tv-{{ item }}"
+        state: directory
+        owner: nobody
+        group: root
+      with_sequence: start=0 end=12 format=ghash%02x
+      tags:
+        - cleanup
+
+    - name: Change the symlink
+      file:
+        src: "/opt/glimesh.tv-ghash0b"
+        dest: /opt/glimesh.tv
+        state: link
+        owner: nobody
+        group: root
+        force: yes
+      tags:
+        - cleanup
+
+    - name: Change the symlink
+      file:
+        src: "/opt/glimesh.tv-ghash0c"
+        dest: /opt/glimesh.tv-old
+        state: link
+        owner: nobody
+        group: root
+        force: yes
+      tags:
+        - cleanup

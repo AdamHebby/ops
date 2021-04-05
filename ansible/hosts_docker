@@ -1,0 +1,5 @@
+[web]
+ansible-glimesh-web ansible_connection=docker
+
+[local:children]
+web
